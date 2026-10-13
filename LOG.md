@@ -38,3 +38,22 @@ doing the right thing with what they received.
 ones.
 
 **Time:** about 40 minutes.
+
+
+## CC-08 — "An old coupon still works"
+
+**Reproduced:** I added a dish to the cart and applied the coupon FRESHERS24. The discount was applied even though the offer expired in
+2024 (coupons.json has "expiresAt": "2024-09-30" and the description
+says "Expired freshers offer"). The coupon list endpoint was fine, so
+the problem was only when a coupon is actually applied.
+
+**Cause:** In backend/logic/pricing.js, `applyCoupon` checks that the
+coupon exists, that `usesLeft` is above zero, the minimum order, veg-only and the time slot, but it never checks `expiresAt`. The function even receives `now` as a parameter but never uses it. The expiry was only checked in GET /api/coupons, which hides expired coupons from the list, so a user who typed the code by hand could still use it.
+
+**Fix:** I added a check in `applyCoupon`, right after the `usesLeft`
+check: if the coupon has an `expiresAt` and that date is not after `now`, it returns `valid: false` with the reason "This coupon has expired". I fixed it in `applyCoupon` because that is the one place every order goes through to apply a coupon, so the rule is enforced on the server and not just in the list.
+
+**Checked:** FRESHERS24 now shows "This coupon has expired" and gives no
+discount. Valid coupons (BYTE10, FLAT50) still apply normally.
+
+**Time:** about 20 minutes.
