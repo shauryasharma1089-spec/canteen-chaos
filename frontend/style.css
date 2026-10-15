@@ -291,7 +291,7 @@ h1, h2, h3 { margin: 0; }
 
 .fav-btn.on { color: var(--amber); }
 
-.dish-body { padding: 12px; display: flex; flex-direction: column; gap: 7px; flex: 1; color: #2b2118; }
+.dish-body { padding: 12px; display: flex; flex-direction: column; gap: 7px; flex: 1; color: var(--ink); }
 
 .dish-name { font-weight: 600; font-size: 15px; overflow-wrap: break-word; }
 
@@ -853,7 +853,7 @@ h1, h2, h3 { margin: 0; }
 .fav-btn.inline { position: static; background: var(--orange-soft); }
 
 .detail-price-row { display: flex; justify-content: space-between; align-items: baseline; margin: 10px 0; }
-.dish-price.big { font-size: 22px; }
+..dish-pricebig { font-size: 22px; }
 .stock-note { font-size: 13px; color: var(--muted); }
 .stock-note.low { color: var(--amber); font-weight: 600; }
 .dish-wait { font-size: 13px; color: var(--blue); margin: 0 0 10px; }
