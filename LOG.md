@@ -137,20 +137,6 @@ readable in light mode.
 **Time:** about 15 minutes.
 
 
-## Could not fix
-
-### CC-03 — "The menu is wider than my phone"
-
-**What I tried:** Checked at 360px and zoomed to 500%. Used the console
-to list elements wider than the screen.
-
-**Where I got to:** Only the filter bar elements (search box, select,
-category tabs) went past the edge. The dish cards did not. I could not
-reproduce the cut-off Add to Cart buttons.
-
-**What I would try next:** Check the filter bar CSS (min-width, no
-wrapping) and test on a real phone.
-
 
 ## CC-04 — "The buttons don't work on my tablet"
 
@@ -190,3 +176,18 @@ scrolls. At that zoom the bar takes up a lot of the screen, so I could
 not judge it on a real phone.
 
 **Time:** about 25  minutes.
+
+
+## Could not fix
+
+### CC-03 — "The menu is wider than my phone"
+
+**What I tried:** Checked at 360px and zoomed to 500%. Used the console
+to list elements wider than the screen.
+
+**Where I got to:** Only the filter bar elements (search box, select,
+category tabs) went past the edge. The dish cards did not. I could not
+reproduce the cut-off Add to Cart buttons.
+
+**What I would try next:** Check the filter bar CSS (min-width, no
+wrapping) and test on a real phone.
