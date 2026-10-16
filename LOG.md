@@ -57,3 +57,85 @@ check: if the coupon has an `expiresAt` and that date is not after `now`, it ret
 discount. Valid coupons (BYTE10, FLAT50) still apply normally.
 
 **Time:** about 20 minutes.
+
+
+## CC-01 — "The search suggestions are behind everything"
+
+**Reproduced:** I opened the app and typed a letter in the search box.
+The suggestions list appeared, but the menu cards were drawn on top of
+it, so only the top part could be clicked.
+
+**Cause:** In frontend/style.css, `.suggest-box` has `z-index: 100`, but
+it sits inside `.search-wrap`, which had `z-index: 1`. A child cannot
+rise above the stacking level of its parent, so the whole search area
+(level 1) was still below `#menu` (2) and the dish cards (3).
+
+**Fix:** I changed `.search-wrap` to `z-index: 45`. That puts it above
+the menu and the filter bar (40) but still below the site header (50). I
+fixed it on the parent because raising the number on `.suggest-box`
+alone could never work.
+
+**Checked:** After a refresh, I typed in the search box and clicked the
+top, middle and bottom suggestions. All of them respond now.
+
+**Time:** about 15 minutes.
+
+
+
+## CC-02 — "Can't read anything in dark mode"
+
+**Reproduced:** I switched the site to dark mode. The dish names and
+prices were almost invisible, while the grey line under the name was
+fine.
+
+**Cause:** In frontend/style.css (line 294), `.dish-body` had a fixed
+`color: #2b2118` (dark brown). Dark mode only changes the CSS variables
+like `--ink`, so this hardcoded colour stayed dark on a dark background.
+The grey line was fine because it uses `var(--muted)`. I found this with
+DevTools: Inspect on the dish name, then "Inherited from" in the Styles
+panel.
+
+**Fix:** I changed it to `color: var(--ink)`, which is dark in light mode and light in dark mode.
+
+**Checked:** Dish names and prices are readable in dark mode, and still
+readable in light mode.
+
+**Time:** about 15 minutes.
+
+
+## Could not fix
+
+### CC-03 — "The menu is wider than my phone"
+
+**What I tried:** Checked at 360px and zoomed to 500%. Used the console
+to list elements wider than the screen.
+
+**Where I got to:** Only the filter bar elements (search box, select,
+category tabs) went past the edge. The dish cards did not. I could not
+reproduce the cut-off Add to Cart buttons.
+
+**What I would try next:** Check the filter bar CSS (min-width, no
+wrapping) and test on a real phone.
+
+
+## CC-05 — "The category bar scrolls away on my phone"
+
+**Reproduced:** On a narrow screen the category and filter bar did not
+stay at the top while I scrolled through the menu. I could not use the
+device toolbar, so I zoomed the browser to 300% to get a narrow layout.
+
+**Cause:** `.filters` is `position: sticky; top: 0`, which is correct.
+But in style.css there is a rule inside `@media (max-width: 480px)`:
+`.view { overflow-x: hidden; }`. The filters sit inside `.view`, and
+`overflow-x: hidden` turns `.view` into its own scroll container, so
+sticky stops following the page scroll.
+
+**Fix:** I changed it to `overflow-x: clip`. `clip` still hides anything
+sticking out sideways, but it does not create a scroll container, so
+sticky works again.
+
+**Checked:** At 300% zoom the filter bar stays at the top while the menu
+scrolls. At that zoom the bar takes up a lot of the screen, so I could
+not judge it on a real phone.
+
+**Time:** about 25  minutes.
