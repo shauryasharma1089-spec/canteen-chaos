@@ -133,6 +133,23 @@ reproduce the cut-off Add to Cart buttons.
 wrapping) and test on a real phone.
 
 
+## CC-04 — "The buttons don't work on my tablet"
+
+**Reproduced:** Not reproduced on a real tablet. I worked out from the
+complaint that it only happens at tablet widths, so I searched the
+media queries in frontend/style.css.
+
+**Cause:** Inside `@media (min-width: 761px) and (max-width: 900px)`,
+`.dish-card::after` and `.img-wrap::after` create transparent absolutely-positioned boxes. One sits over the bottom of the card (on the Add to Cart button) and one over the top-right of the image (on the star button). They are invisible, so the buttons look normal, but they catch the clicks. Laptops (wider) and phones (narrower) never match this media query.
+
+**Fix:** Added `pointer-events: none;` to the rule for those two
+pseudo-elements, so clicks pass through to the buttons below.
+
+**Checked:** **Checked:** I zoomed the browser until the page width was between 761 and 900 px and clicked the star and Add to Cart. After the fix both respond to clicks.
+
+**Time:** about 15 minutes.
+
+
 ## CC-05 — "The category bar scrolls away on my phone"
 
 **Reproduced:** On a narrow screen the category and filter bar did not
