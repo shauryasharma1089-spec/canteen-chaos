@@ -121,7 +121,7 @@ function releaseStock(items, menu) {
   return menu.map((dish) => {
     const line = items.find((i) => Number(i.dishId) === dish.id);
     if (!line) return dish;
-    return { ...dish, stock: dish.stock - line.qty };
+    return { ...dish, stock: dish.stock + line.qty };
   });
 }
 
