@@ -74,6 +74,25 @@ of putting it back. I found the cause by reading the cancel route.
 **Time:** about 25 minutes.
 
 
+## CC-06 — "I ordered more than they had"
+
+**Reproduced:** I ordered more of dish 12 than its stock. Before the
+fix the order was accepted.
+
+**Cause:** In backend/logic/validation.js, `reserveStock` did
+`dish.stock -= item.qty` without checking that enough stock was left,
+so stock could go below zero and the order still went through.
+
+**Fix:** Added a check before it: if `dish.stock < item.qty`, it adds an
+error, so the order route returns the "Someone just took the last one"
+conflict instead of creating the order.
+
+**Checked:** Ordering more than the stock is now rejected with "dish 12
+has only 3 left". Ordering 2 out of 3 still works.
+
+**Time:** about 20 minutes.
+
+
 ## CC-01 — "The search suggestions are behind everything"
 
 **Reproduced:** I opened the app and typed a letter in the search box.
