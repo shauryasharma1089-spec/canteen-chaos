@@ -700,8 +700,7 @@ h1, h2, h3 { margin: 0; }
 }
 
 @media (max-width: 480px) {
-  .view { overflow-x: hidden; }
-
+  .view { overflow-x: clip; }
   .nav-toggle { display: flex; }
 
   .site-nav {
