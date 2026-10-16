@@ -59,6 +59,21 @@ discount. Valid coupons (BYTE10, FLAT50) still apply normally.
 **Time:** about 20 minutes.
 
 
+## CC-07 — "Cancelling makes it worse"
+
+**Reproduced:** I ordered 2 of dish 12 (stock went from 3 to 1) and then
+cancelled the order. Before the fix, cancelling took stock away instead
+of putting it back. I found the cause by reading the cancel route.
+
+**Cause:** Cancelling in orders.routes.js calls `validation.releaseStock`. In backend/logic/validation.js that function is meant to put stock back, but it did `stock: dish.stock - line.qty`, so every cancel took more stock away.
+
+**Fix:** Changed the minus to a plus: `dish.stock + line.qty`.
+
+**Checked:** After the fix, cancelling the order put the stock back to 3.
+
+**Time:** about 25 minutes.
+
+
 ## CC-01 — "The search suggestions are behind everything"
 
 **Reproduced:** I opened the app and typed a letter in the search box.
